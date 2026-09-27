@@ -1,0 +1,118 @@
+/* The game owns its viewport; chat never shares the table's stacking layer. */
+body { display:block !important; margin:0; }
+body[data-view="player"] .app-shell, body[data-view="table"] .app-shell { padding-bottom:0 !important; }
+body[data-view="player"] .topbar, body[data-view="table"] .topbar {
+  min-height:60px !important; padding:8px max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left)) !important;
+  padding-top:max(8px,env(safe-area-inset-top)) !important; flex-wrap:nowrap !important;
+}
+body[data-view="player"] .topbar :is(.topbar-avatar,.topbar-leave-btn), body[data-view="table"] .topbar .topbar-avatar { min-height:44px !important; min-width:44px !important; }
+.za-game-meta { align-items:center; min-height:34px; padding:0 12px; letter-spacing:.02em; }
+.za-game-meta .za-tool { min-height:32px; padding:4px 12px; }
+.za-game-meta > span:nth-child(2) { margin-left:auto; }
+.za-reaction-controls { margin:0 auto; padding:2px 0; width:min(100% - 24px,410px); gap:6px; }
+.za-emote-picker button { min-height:36px; padding:3px; border-radius:10px; }
+.za-emote-picker button > span { font-size:23px; }
+.za-emote-picker small { display:none; }
+.za-reactions-mute { min-height:36px; flex-basis:36px; width:36px; padding:6px; }
+.za-chat { min-width:0; }
+.za-hall { margin-top:40px; padding-top:24px; border-top:1px solid #c4ee9950; }
+.za-hall h2 { color:var(--za-accent); }
+
+/* Desktop prioritizes legibility. The optional chat floats without shrinking the game. */
+@media(min-width:1024px) {
+  body[data-view="player"] .app-shell, body[data-view="table"] .app-shell { height:auto !important; min-height:100svh !important; display:block !important; padding-bottom:24px !important; }
+  .za-game { width:calc(100% - 32px); max-width:1280px; }
+  .za-game-meta { position:sticky; top:0; z-index:30; background:#151610f5; padding:6px 14px; }
+  .za-game-meta .za-tool { min-height:44px; }
+  .za-match-layout, .za-with-chat .za-match-layout { display:block; }
+  .za-play-area { display:block; }
+  .za-chat { display:none; position:fixed; z-index:60; right:20px; top:76px; width:340px; height:min(620px,calc(100dvh - 96px)); max-height:none; transform:none; visibility:visible; box-shadow:0 12px 45px #0009; }
+  .za-chat.za-chat-open { display:flex; }
+  .za-chat-close { display:block; min-height:44px; }
+  .za-chat-form { flex-wrap:wrap; }
+  .za-chat-form input { flex-basis:100%; }
+  .za-chat-form button { width:100%; }
+  .za-board { height:clamp(680px,60vw,800px); }
+  .za-board::before { inset:12px 20px 8px; border-width:7px; }
+  .za-board::after { inset:25px 33px 21px; }
+  .za-seat { width:104px; gap:3px; }
+  .za-portrait { width:72px; height:72px; }
+  .za-name { font-size:13px; line-height:18px; }
+  .za-hearts { height:20px; }
+  .za-heart { width:15px; height:16px; }
+  .za-stats { padding:4px 8px; font-size:14px; line-height:16px; }
+  .za-played { width:72px; }
+  .za-played, .za-deal-card { top:calc(var(--sy) + 70px); }
+  .za-self { --sy:calc(100% - 154px); --cx:60%; }
+  .za-south-west, .za-south-east { --sy:calc(100% - 162px); }
+  .za-north { --sy:1%; --cx:60%; }
+  .za-north-west, .za-north-east { --sy:6%; }
+  .za-north-west, .za-south-west { --cx:30%; }
+  .za-north-east, .za-south-east { --cx:70%; }
+  .za-center { top:49%; width:26%; }
+  .za-controls { display:block; width:min(100% - 40px,740px); margin:18px auto 0; padding:0; }
+  .za-decisions { width:min(100%,640px); margin:0 auto; }
+  .za-bid, .za-asso-choice { padding:18px; margin-bottom:14px; }
+  .za-controls-heading h2 { font-size:19px; }
+  .za-bid-option { min-height:52px; font-size:21px !important; }
+  .za-hint { font-size:13px; }
+  .za-hand { min-height:220px; padding:30px 16px 34px; }
+  .za-hand-card { width:112px; flex:0 1 112px; }
+  .za-reveal { width:460px; gap:12px; }
+  .za-reveal-cards { grid-template-columns:repeat(8,minmax(0,1fr)); gap:6px; }
+  .za-reveal-cards > div { width:50px; }
+  .za-center:has(.za-reveal) { top:50%; }
+}
+.za-turn-clock { font-variant-numeric:tabular-nums; white-space:nowrap; color:var(--za-accent); }
+.za-turn-clock[data-urgent="true"] { color:#ffb6ad; }
+.za-premove-status { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px; padding:8px 12px; margin:8px 0; border:1px solid #d9b86177; border-radius:12px; color:#f3d887; font-size:12px; }
+.za-premove-status .za-tool { min-height:44px; }
+.za-hand-card.za-queued .za-card { outline:3px solid #efc665; outline-offset:3px; }
+@media(max-width:1023px) {
+  body[data-view="player"] .topbar, body[data-view="table"] .topbar { position:sticky !important; top:0 !important; z-index:50; gap:6px !important; }
+  body[data-view="player"] .topbar-right, body[data-view="table"] .topbar-right { gap:6px !important; }
+  body[data-view="player"] .app-shell, body[data-view="table"] .app-shell { padding-bottom:max(24px,env(safe-area-inset-bottom)) !important; }
+  .zl-header { padding-top:max(12px,env(safe-area-inset-top)); }
+  .zl-login, .zl-profile { min-height:44px; }
+  .za-game-meta { padding:2px 12px; font-size:8px; gap:6px; }
+  .za-game-meta .za-tool { min-height:44px; }
+  .za-match-layout { display:flex; flex-direction:column; gap:0; }
+  .za-play-area { display:contents; }
+  .za-board { order:0; height:clamp(650px,166vw,900px); }
+  .za-seat { width:64px; gap:2px; }
+  .za-portrait { width:52px; height:52px; }
+  .za-name { font-size:10px; line-height:14px; }
+  .za-hearts { height:16px; }
+  .za-heart { width:12px; height:13px; }
+  .za-hearts small { font-size:8px; }
+  .za-stats { gap:6px; padding:3px 6px; font-size:11px; line-height:14px; }
+  .za-played { width:clamp(42px,12vw,58px); }
+  .za-self { --sy:83%; --cy:68%; }
+  .za-north { --sy:2%; --cy:27%; }
+  .za-north-west { --sx:18%; --sy:14%; --cx:36%; --cy:25%; }
+  .za-north-east { --sx:82%; --sy:14%; --cx:64%; --cy:25%; }
+  .za-west { --sx:12%; --sy:43%; --cx:34%; --cy:52%; }
+  .za-east { --sx:88%; --sy:43%; --cx:66%; --cy:52%; }
+  .za-south-west { --sx:18%; --sy:73%; --cx:36%; --cy:76%; }
+  .za-south-east { --sx:82%; --sy:73%; --cx:64%; --cy:76%; }
+  .za-center { top:39%; width:40%; }
+  .za-center:has(.za-reveal) { top:50%; }
+  .za-chat { display:none; position:static; width:calc(100% - 24px); height:260px; max-height:50svh; padding:12px; margin:12px auto 0; transform:none; visibility:visible; border-radius:16px; order:1; }
+  .za-reveal { width:min(180px,40vw); }
+  .za-chat.za-chat-open { display:flex; }
+  .za-chat-close { display:block; min-height:44px; }
+  .za-chat-privacy { display:none; }
+  .za-chat-heading { padding-bottom:6px; }
+  .za-chat-heading h2 { font-size:11px; }
+  .za-chat-form { flex-wrap:nowrap; }
+  .za-chat-form input { flex-basis:auto; padding:10px; }
+  .za-chat-form button { width:auto; }
+  .za-controls { order:2; padding-bottom:0; margin:8px auto 0; }
+  .za-hand { min-height:130px; padding:20px 8px 26px; }
+  .za-hand-card { flex:0 1 78px; }
+  .za-bid { margin-bottom:8px; }
+  .za-bid-footer p { font-size:10px; }
+  .za-hint { margin:5px 0; font-size:10px; }
+  .za-reaction-controls { order:3; margin:8px auto; }
+  .za-emote-picker button, .za-reactions-mute { min-height:44px; }
+}

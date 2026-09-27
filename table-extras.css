@@ -1,0 +1,81 @@
+/* Shared effects and messaging. viewport.css owns the responsive game layout. */
+body[data-view="player"], body[data-view="table"] { overflow-x:clip !important; overflow-y:visible !important; }
+.za-tools { display:flex; justify-content:center; gap:8px; padding:8px 12px; flex-wrap:wrap; position:sticky; top:0; z-index:30; background:#151610f5; }
+.za-tool { background:#242d23; color:#d6dfcc; border:1px solid #a6bf804d; border-radius:24px; padding:8px 12px; min-height:40px; font-size:11px !important; font-weight:700 !important; }
+.za-tool b { background:var(--za-accent); color:#182816; padding:2px 6px; border-radius:12px; }
+.za-hearts { height:20px; align-items:center; gap:2px; }
+.za-heart { width:15px; height:16px; flex-shrink:0; fill:#ffaaaa; transition:fill .25s; }
+.za-heart-empty { fill:#484f48; stroke:#849083; stroke-width:1; }
+.za-hearts small { font-size:9px; color:#e7ebdf; margin-left:2px; font-weight:800; }
+.za-emote { position:absolute; inset:0; display:grid; place-items:center; border:2px solid #e1ecba; border-radius:50%; background:radial-gradient(circle at 35% 25%,#607440,#172518); box-shadow:0 0 24px #c6e76c55; font-size:42px; line-height:1; z-index:3; animation:za-emote-pop 420ms cubic-bezier(.2,.8,.3,1.3) both; }
+.za-life-loss { position:absolute; inset:0; display:grid; place-items:center; background:#3e101be0; border:2px solid #ff9f9f; color:#fff0e9; border-radius:50%; font-weight:800; font-size:30px; animation:za-life-impact .45s ease-out both; }
+.za-match-layout { min-width:0; }
+.za-play-area { min-width:0; }
+.za-chat { border:1px solid #99b78844; border-radius:20px; background:linear-gradient(140deg,#222b22,#171b17); padding:16px; margin:0; display:flex; flex-direction:column; min-height:0; box-shadow:0 12px 40px #0004; }
+.za-chat-heading { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.za-chat-heading h2 { color:#e4eddc; font-size:13px; font-weight:800; letter-spacing:.07em; margin:0; }
+#room-chat-body { display:flex; flex-direction:column; flex:1; min-height:0; gap:10px; }
+.za-reaction-controls { display:flex; flex-wrap:wrap; align-items:center; gap:8px; width:min(100% - 24px,620px); margin:8px auto 16px; }
+.za-emote-picker { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:6px; flex:1; min-width:0; }
+.za-reactions-mute { flex:0 0 44px; width:44px; padding:10px; }
+.za-reactions-mute svg { display:block; width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; }
+.za-reactions-mute[aria-pressed="true"] { color:#f3d3a3; background:#443429; }
+.za-reaction-controls .za-chat-error { flex-basis:100%; margin:0; }
+.za-emote-picker button { min-width:0; padding:8px 2px; min-height:52px; background:#353c29; border:1px solid #9aaa7044; border-radius:12px; color:#d9e7d0; transition:background .2s, transform .2s; }
+.za-emote-picker button:hover { background:#465937; transform:translateY(-3px); }
+.za-emote-picker button:disabled { opacity:.5; }
+.za-emote-picker button > span { display:block; font-size:28px; line-height:1.2; }
+.za-emote-picker small { font-size:9px; display:block; padding-top:5px; }
+.za-chat-privacy { color:#b6c1ad; font-size:11px; line-height:1.6; }
+.za-chat-log { flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:4px; display:flex; flex-direction:column; gap:10px; overflow-wrap:anywhere; }
+.za-message { border-radius:2px 12px 12px; padding:9px 12px; background:#323a2c; max-width:95%; width:fit-content; display:grid; gap:4px; flex-shrink:0; }
+.za-message-self { align-self:flex-end; background:#294c39; border-radius:12px 2px 12px 12px; }
+.za-message b { font-size:10px; color:#bddaa6; }
+.za-message > span { font-size:13px; line-height:1.5; white-space:pre-wrap; }
+.za-chat-empty { font-size:12px; color:#b0bca5; }
+.za-chat-form { display:flex; gap:8px; margin:0; flex-shrink:0; }
+.za-chat-form input { background:#10180f; color:#edf4e5; border:1px solid #88977e; border-radius:12px; min-width:0; flex:1; width:0; padding:12px; font:inherit; font-size:16px; }
+.za-chat-form .za-primary { padding:10px 12px; font-size:12px; }
+.za-chat-unread { border:1px solid #a7cb83; border-radius:12px; background:#304826; color:#e2f5d0; font-size:11px !important; padding:8px; }
+.za-chat-backdrop, .za-chat-close { display:none; }
+.za-chat-error { color:#ffb6ad; font-size:12px; }
+.za-sr-only { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.za-played, .za-deal-card { animation:none; transform:translate(-50%,-50%); }
+.za-shuffle { perspective:500px; }
+.za-shuffle::before { content:""; position:absolute; inset:-20px; border:1px solid #d3e9a466; border-radius:50%; box-shadow:0 0 32px #bdff6729; animation:za-shuffle-ring 1.2s ease-out both; }
+.za-shuffle i { --cut:1; background:repeating-linear-gradient(45deg,#163d29 0 3px,#214831 3px 6px); box-shadow:2px 3px 0 #c9c3a7,4px 6px 12px #0007; animation:za-riffle .9s cubic-bezier(.45,.05,.3,1) both; }
+.za-shuffle i:nth-child(2) { --cut:-1; animation-delay:.08s; transform:rotate(4deg); }
+.za-shuffle i:nth-child(3) { --cut:1; animation-delay:.16s; transform:rotate(-4deg); }
+.za-shuffle i:nth-child(4) { --cut:-1; animation-delay:.24s; }
+.za-shuffle i:nth-child(5) { --cut:1; animation-delay:.32s; }
+.za-winning .za-card { animation:za-victory-glow 1.1s ease-out 2; }
+.za-played:has(.za-ace) .za-card { border:2px solid #edd77e; box-shadow:0 0 20px #ffe16566,0 6px 12px #0006; }
+.za-announcement { animation:za-announce .3s ease-out both; }
+.za-active .za-portrait { animation:za-turn-ring .8s ease-out both; }
+.za-result { background:radial-gradient(ellipse at top,#42543155,transparent 65%),#1c2017; border-color:#b6d78a; box-shadow:0 0 35px #a5d46b22; }
+.za-result h2 { font-family:"Cormorant Garamond",Georgia,serif; font-size:38px; color:#d5edb7; }
+.za-motion-off .za-game *, .za-motion-off .za-game *::before { animation:none !important; transition:none !important; }
+@media(max-width:600px) { .za-emote { font-size:34px; } .za-chat { padding:12px; } .za-emote-picker { gap:4px; } .za-emote-picker small { display:none; } .za-chat-form .za-primary { padding:10px; } }
+@media(min-width:1200px) {
+  .za-with-chat { width:min(100% - 32px,1540px); }
+  .za-with-chat .za-match-layout { display:grid; grid-template-columns:minmax(0,1fr) 300px; align-items:start; gap:20px; }
+  .za-chat { position:sticky; top:68px; height:clamp(220px,calc(100dvh - 260px),620px); max-height:calc(100dvh - 86px); }
+  .za-chat-form { flex-wrap:wrap; }
+  .za-chat-form input { flex-basis:100%; }
+  .za-chat-form button { width:100%; }
+}
+@media(max-width:1199px) {
+  .za-chat { position:fixed; z-index:6000; right:0; top:0; width:min(88vw,370px); height:var(--za-visual-height,100dvh); padding: max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) 16px; border-radius:20px 0 0 20px; transform:translateX(100%); visibility:hidden; transition:transform .2s ease-out; }
+  .za-chat.za-chat-open { transform:translateX(0); visibility:visible; }
+  .za-chat-close { display:block; }
+  .za-chat-backdrop.za-chat-backdrop-open { display:block; position:fixed; z-index:5999; inset:0; border:0; border-radius:0; background:#03080377; touch-action:none; cursor:default; }
+  body[data-view="player"].za-chat-is-open { overflow:hidden !important; }
+}
+@media(prefers-reduced-motion:reduce) { .za-game *, .za-game *::before { animation:none !important; transition:none !important; } }
+@keyframes za-riffle { 0%,100% { translate:0 0; rotate:0deg; } 24% { translate:calc(var(--cut)*30px) -8px; rotate:calc(var(--cut)*16deg); } 49% { translate:calc(var(--cut)*-8px) 2px; rotate:calc(var(--cut)*-6deg); } 74% { translate:calc(var(--cut)*24px) -5px; rotate:calc(var(--cut)*12deg); } }
+@keyframes za-shuffle-ring { from { scale:.6; opacity:0; } 50% { opacity:1; } to { scale:1.3; opacity:0; } }
+@keyframes za-emote-pop { from { transform:scale(.3) rotate(-16deg); opacity:0; } 70% { transform:scale(1.1) rotate(6deg); } to { transform:scale(1) rotate(0); opacity:1; } }
+@keyframes za-life-impact { from { opacity:0; transform:scale(1.2); } to { opacity:1; transform:scale(1); } }
+@keyframes za-victory-glow { 50% { box-shadow:0 0 35px #b9f37888; outline-color:#f4edb0; } }
+@keyframes za-announce { from { opacity:0; translate:0 5px; } to { opacity:1; translate:0 0; } }
+@keyframes za-turn-ring { from { box-shadow:0 0 0 10px #bada7522; } to { box-shadow:0 0 0 3px #a0d88b25,0 0 24px #acdf8c55; } }
